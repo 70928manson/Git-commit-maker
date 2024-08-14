@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "Git commit message maker",
+    "version": "0.0.1",
+    "description": "An extension for easily creating Git commit messages.",
+    "action": {
+        "default_popup": "index.html",
+        "default_icon": "git.png"
+    },
+    "icons": {
+        "16": "git.png",
+        "32": "git.png",
+        "48": "git.png",
+        "128": "git.png"
+    }
+}

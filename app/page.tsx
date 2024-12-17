@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { getAICommitMessage } from "@/lib/api";
+
+import { useTheme } from "next-themes";
+import { Sun, Moon } from "lucide-react";
 
 export default function Home() {
   const [featType, setFeatType] = useState("feat");
@@ -16,6 +19,9 @@ export default function Home() {
   const [seeAlso, setSeeAlso] = useState("");
   const [fullCommit, setFullCommit] = useState("");
   const [aiSuggestion, setAISuggestion] = useState("");
+
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   // 更新 Commit 訊息
   const updateFullCommit = () => {
@@ -39,10 +45,31 @@ export default function Home() {
     setAISuggestion(response);
   };
 
+  // 防止 Hydration 錯誤
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <main className="flex flex-col gap-6 p-6 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold text-center">Git Commit Message Maker</h1>
 
+      <div className="flex justify-between items-center">
+        {/* 日間/夜間模式切換按鈕 */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        >
+          {theme === "dark" ? (
+            <Sun className="h-6 w-6 text-yellow-400" />
+          ) : (
+            <Moon className="h-6 w-6 text-gray-800" />
+          )}
+        </Button>
+      </div>
       {/* Feat Selector */}
       <div>
         <label className="text-sm font-medium">Feat Type</label>
